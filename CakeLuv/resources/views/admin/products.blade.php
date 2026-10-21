@@ -3,170 +3,195 @@
 @section('title', 'Manajemen Produk')
 
 @section('content')
-<div class="mb-6 flex justify-between items-center">
-    <h2 class="text-gray-700 font-bold text-xl">Daftar Produk</h2>
-    <div class="flex items-center gap-4">
-        <select onchange="window.location.href=this.value" class="px-4 py-2.5 rounded-xl border border-gray-200 bg-white text-gray-600 focus:outline-none focus:border-primary text-sm font-medium">
-            <option value="{{ route('admin.products.index', ['sort' => 'desc']) }}" {{ $sort == 'desc' ? 'selected' : '' }}>Waktu Ditambahkan: Terbaru</option>
-            <option value="{{ route('admin.products.index', ['sort' => 'asc']) }}" {{ $sort == 'asc' ? 'selected' : '' }}>Waktu Ditambahkan: Terlama</option>
-        </select>
-        <button onclick="openModal('modal-add')" class="bg-primary hover:bg-primary_hover text-white px-5 py-2.5 rounded-xl font-bold transition flex items-center">
-            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
-            Tambah Produk
-        </button>
-    </div>
-</div>
-
-@foreach(['Daftar Kue' => $cakes, 'Daftar Lilin' => $candles] as $title => $products)
-<h3 class="text-gray-700 font-bold mb-4 text-lg">{{ $title }}</h3>
-<div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden mb-8">
-    <div class="overflow-x-auto">
-        <table class="w-full whitespace-nowrap">
-            <thead class="bg-gray-50 text-gray-500 text-xs font-bold uppercase tracking-wider">
-                <tr>
-                    <th class="px-6 py-4 text-left">Produk</th>
-                    <th class="px-6 py-4 text-left">Kategori</th>
-                    <th class="px-6 py-4 text-left">Harga</th>
-                    <th class="px-6 py-4 text-center">Stok Harian</th>
-                    <th class="px-6 py-4 text-center">Waktu Ditambahkan</th>
-                    <th class="px-6 py-4 text-center">Aksi</th>
-                </tr>
-            </thead>
-            <tbody class="divide-y divide-gray-100 text-sm">
-                @forelse($products as $product)
-                <tr class="hover:bg-gray-50 transition">
-                    <td class="px-6 py-4 flex items-center">
-                        <img src="{{ $product->image_url }}" alt="{{ $product->name }}" class="w-12 h-12 object-cover rounded-lg mr-4 border border-gray-200">
-                        <div>
-                            <p class="font-bold text-gray-800">{{ $product->name }}</p>
-                            <p class="text-xs text-gray-400 w-48 truncate">{{ $product->description }}</p>
-                        </div>
-                    </td>
-                    <td class="px-6 py-4">{{ $product->category->name }}</td>
-                    <td class="px-6 py-4 font-bold text-primary">Rp {{ number_format($product->price * 1000, 0, ',', '.') }}</td>
-                    <td class="px-6 py-4 text-center">
-                        <span class="px-3 py-1 rounded-full text-xs font-bold {{ $product->daily_stock > 5 ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700' }}">
-                            {{ $product->daily_stock }}
-                        </span>
-                    </td>
-                    <td class="px-6 py-4 text-center text-gray-500 text-xs">
-                        {{ $product->created_at ? $product->created_at->format('d M Y, H:i') : '-' }}
-                    </td>
-                    <td class="px-6 py-4 text-center">
-                        <button onclick="openModal('modal-edit-{{ $product->id }}')" class="text-blue-500 hover:text-blue-700 font-bold text-xs uppercase tracking-wider mr-3">Edit</button>
-                        <form action="{{ route('admin.products.destroy', $product->id) }}" method="POST" class="inline" onsubmit="return confirm('Yakin ingin menghapus produk ini?')">
-                            @csrf
-                            <button type="submit" class="text-red-500 hover:text-red-700 font-bold text-xs uppercase tracking-wider">Hapus</button>
-                        </form>
-                    </td>
-                </tr>
-
-                <!-- Modal Edit -->
-                <div id="modal-edit-{{ $product->id }}" class="fixed inset-0 bg-gray-900 bg-opacity-50 hidden flex items-center justify-center z-50">
-                    <div class="bg-white rounded-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto shadow-2xl transform transition-all">
-                        <div class="px-6 py-4 border-b border-gray-100 flex justify-between items-center sticky top-0 bg-white z-10">
-                            <h3 class="font-bold text-lg text-gray-800">Edit Produk</h3>
-                            <button onclick="closeModal('modal-edit-{{ $product->id }}')" class="text-gray-400 hover:text-gray-600">
-                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-                            </button>
-                        </div>
-                        <form action="{{ route('admin.products.update', $product->id) }}" method="POST" enctype="multipart/form-data" class="p-6 text-left whitespace-normal">
-                            @csrf
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-                                <div>
-                                    <label class="block text-xs font-bold text-gray-500 uppercase tracking-widest mb-2">Nama Produk</label>
-                                    <input type="text" name="name" value="{{ $product->name }}" required class="w-full px-4 py-3 rounded-xl border border-gray-200 bg-gray-50 focus:bg-white focus:border-primary focus:ring-1 focus:ring-primary outline-none transition">
-                                </div>
-                                <div>
-                                    <label class="block text-xs font-bold text-gray-500 uppercase tracking-widest mb-2">Kategori</label>
-                                    <select name="category_id" required class="w-full px-4 py-3 rounded-xl border border-gray-200 bg-gray-50 focus:bg-white focus:border-primary focus:ring-1 focus:ring-primary outline-none transition">
-                                        @foreach($categories as $cat)
-                                            <option value="{{ $cat->id }}" {{ $product->category_id == $cat->id ? 'selected' : '' }}>{{ $cat->name }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                                <div>
-                                    <label class="block text-xs font-bold text-gray-500 uppercase tracking-widest mb-2">Harga (dalam ribuan)</label>
-                                    <input type="number" name="price" value="{{ $product->price }}" required class="w-full px-4 py-3 rounded-xl border border-gray-200 bg-gray-50 focus:bg-white focus:border-primary focus:ring-1 focus:ring-primary outline-none transition">
-                                </div>
-                                <div>
-                                    <label class="block text-xs font-bold text-gray-500 uppercase tracking-widest mb-2">Stok Harian</label>
-                                    <input type="number" name="daily_stock" value="{{ $product->daily_stock }}" required class="w-full px-4 py-3 rounded-xl border border-gray-200 bg-gray-50 focus:bg-white focus:border-primary focus:ring-1 focus:ring-primary outline-none transition">
-                                </div>
-                                <div class="md:col-span-2">
-                                    <label class="block text-xs font-bold text-gray-500 uppercase tracking-widest mb-2">Deskripsi</label>
-                                    <textarea name="description" rows="3" required class="w-full px-4 py-3 rounded-xl border border-gray-200 bg-gray-50 focus:bg-white focus:border-primary focus:ring-1 focus:ring-primary outline-none transition">{{ $product->description }}</textarea>
-                                </div>
-                                <div class="md:col-span-2">
-                                    <label class="block text-xs font-bold text-gray-500 uppercase tracking-widest mb-2">Gambar Baru (Opsional)</label>
-                                    <input type="file" name="image" accept="image/*" class="w-full px-4 py-3 rounded-xl border border-gray-200 bg-gray-50 focus:bg-white focus:border-primary focus:ring-1 focus:ring-primary outline-none transition">
-                                    <p class="text-xs text-gray-400 mt-2">Biarkan kosong jika tidak ingin mengubah gambar.</p>
-                                </div>
-                            </div>
-                            <div class="flex justify-end gap-3 pt-4 border-t border-gray-100">
-                                <button type="button" onclick="closeModal('modal-edit-{{ $product->id }}')" class="px-5 py-2.5 rounded-xl border border-gray-200 text-gray-600 hover:bg-gray-50 font-bold transition">Batal</button>
-                                <button type="submit" class="px-5 py-2.5 rounded-xl bg-primary hover:bg-primary_hover text-white font-bold transition">Update Produk</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-                @empty
-                <tr>
-                    <td colspan="6" class="px-6 py-8 text-center text-gray-500">Belum ada produk untuk section ini.</td>
-                </tr>
-                @endforelse
-            </tbody>
-        </table>
-    </div>
-</div>
-@endforeach
-
-<!-- Modal Add -->
-<div id="modal-add" class="fixed inset-0 bg-gray-900 bg-opacity-50 hidden flex items-center justify-center z-50">
-    <div class="bg-white rounded-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto shadow-2xl transform transition-all">
-        <div class="px-6 py-4 border-b border-gray-100 flex justify-between items-center sticky top-0 bg-white z-10">
-            <h3 class="font-bold text-lg text-gray-800">Tambah Produk Baru</h3>
-            <button onclick="closeModal('modal-add')" class="text-gray-400 hover:text-gray-600">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+<div class="space-y-6">
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div>
+            <h1 class="text-2xl font-bold tracking-tight text-slate-900 dark:text-slate-100">Manajemen Produk</h1>
+            <p class="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-0.5">
+                Kelola katalog kue artisan, lilin ulang tahun, harga, dan ketersediaan stok harian.
+            </p>
+        </div>
+        <div class="flex items-center gap-3">
+            <select onchange="window.location.href=this.value" class="px-3 py-2 rounded-lg border border-slate-200 dark:border-white/10 bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300 text-xs font-medium focus:outline-none focus:ring-1 focus:ring-slate-900 dark:focus:ring-white">
+                <option value="{{ route('admin.products.index', ['sort' => 'desc']) }}" {{ $sort == 'desc' ? 'selected' : '' }}>Waktu: Terbaru</option>
+                <option value="{{ route('admin.products.index', ['sort' => 'asc']) }}" {{ $sort == 'asc' ? 'selected' : '' }}>Waktu: Terlama</option>
+            </select>
+            <button onclick="openModal('modal-add')" class="inline-flex items-center justify-center gap-1.5 h-9 px-3.5 rounded-lg bg-slate-900 dark:bg-white text-white dark:text-slate-900 text-xs font-semibold shadow-2xs hover:bg-slate-800 dark:hover:bg-slate-100 transition-colors">
+                <i data-lucide="plus" class="size-3.5"></i>
+                <span>Tambah Produk</span>
             </button>
         </div>
-        <form action="{{ route('admin.products.store') }}" method="POST" enctype="multipart/form-data" class="p-6">
-            @csrf
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-                <div>
-                    <label class="block text-xs font-bold text-gray-500 uppercase tracking-widest mb-2">Nama Produk</label>
-                    <input type="text" name="name" required class="w-full px-4 py-3 rounded-xl border border-gray-200 bg-gray-50 focus:bg-white focus:border-primary focus:ring-1 focus:ring-primary outline-none transition">
-                </div>
-                <div>
-                    <label class="block text-xs font-bold text-gray-500 uppercase tracking-widest mb-2">Kategori</label>
-                    <select name="category_id" required class="w-full px-4 py-3 rounded-xl border border-gray-200 bg-gray-50 focus:bg-white focus:border-primary focus:ring-1 focus:ring-primary outline-none transition">
-                        @foreach($categories as $cat)
-                            <option value="{{ $cat->id }}">{{ $cat->name }}</option>
-                        @endforeach
-                    </select>
-                </div>
-                <div>
-                    <label class="block text-xs font-bold text-gray-500 uppercase tracking-widest mb-2">Harga (dalam ribuan)</label>
-                    <input type="number" name="price" required class="w-full px-4 py-3 rounded-xl border border-gray-200 bg-gray-50 focus:bg-white focus:border-primary focus:ring-1 focus:ring-primary outline-none transition">
-                </div>
-                <div>
-                    <label class="block text-xs font-bold text-gray-500 uppercase tracking-widest mb-2">Stok Harian</label>
-                    <input type="number" name="daily_stock" required class="w-full px-4 py-3 rounded-xl border border-gray-200 bg-gray-50 focus:bg-white focus:border-primary focus:ring-1 focus:ring-primary outline-none transition">
-                </div>
-                <div class="md:col-span-2">
-                    <label class="block text-xs font-bold text-gray-500 uppercase tracking-widest mb-2">Deskripsi</label>
-                    <textarea name="description" rows="3" required class="w-full px-4 py-3 rounded-xl border border-gray-200 bg-gray-50 focus:bg-white focus:border-primary focus:ring-1 focus:ring-primary outline-none transition"></textarea>
-                </div>
-                <div class="md:col-span-2">
-                    <label class="block text-xs font-bold text-gray-500 uppercase tracking-widest mb-2">Gambar Produk</label>
-                    <input type="file" name="image" accept="image/*" required class="w-full px-4 py-3 rounded-xl border border-gray-200 bg-gray-50 focus:bg-white focus:border-primary focus:ring-1 focus:ring-primary outline-none transition">
-                </div>
+    </div>
+
+    @foreach(['Daftar Kue Artisan' => $cakes, 'Daftar Aksesoris & Lilin' => $candles] as $title => $products)
+    <div class="space-y-3">
+        <div class="flex items-center justify-between">
+            <h3 class="text-base font-semibold text-slate-900 dark:text-white">{{ $title }}</h3>
+            <span class="text-xs text-slate-500 dark:text-slate-400">{{ count($products) }} item terdaftar</span>
+        </div>
+
+        <div class="rounded-xl border border-slate-200/80 dark:border-white/10 bg-white dark:bg-[#0c1222] shadow-xs overflow-hidden">
+            <div class="overflow-x-auto">
+                <table class="w-full whitespace-nowrap text-xs text-left">
+                    <thead class="bg-slate-50/80 dark:bg-slate-900/60 text-slate-500 dark:text-slate-400 font-semibold uppercase tracking-wider border-b border-slate-200/80 dark:border-white/10">
+                        <tr>
+                            <th class="px-5 py-3.5">Produk</th>
+                            <th class="px-5 py-3.5">Kategori</th>
+                            <th class="px-5 py-3.5">Harga</th>
+                            <th class="px-5 py-3.5 text-center">Stok Harian</th>
+                            <th class="px-5 py-3.5 text-center">Ditambahkan</th>
+                            <th class="px-5 py-3.5 text-center">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-100 dark:divide-white/5">
+                        @forelse($products as $product)
+                        <tr class="hover:bg-slate-50/60 dark:hover:bg-slate-900/40 transition-colors">
+                            <td class="px-5 py-3.5 flex items-center">
+                                <img src="{{ $product->image_url }}" alt="{{ $product->name }}" class="size-10 object-cover rounded-lg mr-3 border border-slate-200 dark:border-white/10 shrink-0">
+                                <div class="min-w-0">
+                                    <p class="font-semibold text-slate-900 dark:text-slate-100 truncate">{{ $product->name }}</p>
+                                    <p class="text-[10px] text-slate-400 dark:text-slate-500 w-52 truncate">{{ $product->description }}</p>
+                                </div>
+                            </td>
+                            <td class="px-5 py-3.5 text-slate-600 dark:text-slate-400">
+                                <span class="inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-medium bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-white/10">
+                                    {{ $product->category->name }}
+                                </span>
+                            </td>
+                            <td class="px-5 py-3.5 font-bold text-slate-900 dark:text-white">
+                                Rp {{ number_format($product->price * 1000, 0, ',', '.') }}
+                            </td>
+                            <td class="px-5 py-3.5 text-center">
+                                <span class="inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-bold {{ $product->daily_stock > 5 ? 'bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300 border border-emerald-200/60 dark:border-emerald-800/40' : 'bg-rose-50 dark:bg-rose-950/40 text-rose-700 dark:text-rose-300 border border-rose-200/60 dark:border-rose-800/40' }}">
+                                    {{ $product->daily_stock }} unit
+                                </span>
+                            </td>
+                            <td class="px-5 py-3.5 text-center text-slate-500 dark:text-slate-400 text-[11px]">
+                                {{ $product->created_at ? $product->created_at->format('d M Y') : '-' }}
+                            </td>
+                            <td class="px-5 py-3.5 text-center">
+                                <div class="inline-flex items-center gap-1.5">
+                                    <button onclick="openModal('modal-edit-{{ $product->id }}')" class="px-2.5 py-1 rounded-md text-xs font-semibold bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 transition-colors">
+                                        Edit
+                                    </button>
+                                    <form action="{{ route('admin.products.destroy', $product->id) }}" method="POST" class="inline" onsubmit="return confirm('Yakin ingin menghapus produk ini?')">
+                                        @csrf
+                                        <button type="submit" class="px-2.5 py-1 rounded-md text-xs font-semibold text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/30 transition-colors">
+                                            Hapus
+                                        </button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <!-- Modal Edit -->
+                        <div id="modal-edit-{{ $product->id }}" class="fixed inset-0 bg-slate-950/60 backdrop-blur-xs hidden flex items-center justify-center z-50 p-4">
+                            <div class="bg-white dark:bg-[#0c1222] border border-slate-200 dark:border-white/10 rounded-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto shadow-xl transform transition-all">
+                                <div class="px-6 py-4 border-b border-slate-100 dark:border-white/10 flex justify-between items-center sticky top-0 bg-white dark:bg-[#0c1222] z-10">
+                                    <h3 class="font-bold text-sm text-slate-900 dark:text-white">Edit Produk</h3>
+                                    <button onclick="closeModal('modal-edit-{{ $product->id }}')" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 p-1">
+                                        <i data-lucide="x" class="size-4"></i>
+                                    </button>
+                                </div>
+                                <form action="{{ route('admin.products.update', $product->id) }}" method="POST" enctype="multipart/form-data" class="p-6 text-left whitespace-normal">
+                                    @csrf
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                                        <div>
+                                            <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1.5">Nama Produk</label>
+                                            <input type="text" name="name" value="{{ $product->name }}" required class="w-full px-3 py-2 text-xs rounded-lg border border-slate-200 dark:border-white/10 bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-white focus:outline-none focus:ring-1 focus:ring-slate-900 dark:focus:ring-white">
+                                        </div>
+                                        <div>
+                                            <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1.5">Kategori</label>
+                                            <select name="category_id" required class="w-full px-3 py-2 text-xs rounded-lg border border-slate-200 dark:border-white/10 bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-white focus:outline-none focus:ring-1 focus:ring-slate-900 dark:focus:ring-white">
+                                                @foreach($categories as $cat)
+                                                    <option value="{{ $cat->id }}" {{ $product->category_id == $cat->id ? 'selected' : '' }}>{{ $cat->name }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                        <div>
+                                            <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1.5">Harga (dalam ribuan, misal 360)</label>
+                                            <input type="number" name="price" value="{{ $product->price }}" required class="w-full px-3 py-2 text-xs rounded-lg border border-slate-200 dark:border-white/10 bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-white focus:outline-none focus:ring-1 focus:ring-slate-900 dark:focus:ring-white">
+                                        </div>
+                                        <div>
+                                            <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1.5">Stok Harian</label>
+                                            <input type="number" name="daily_stock" value="{{ $product->daily_stock }}" required class="w-full px-3 py-2 text-xs rounded-lg border border-slate-200 dark:border-white/10 bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-white focus:outline-none focus:ring-1 focus:ring-slate-900 dark:focus:ring-white">
+                                        </div>
+                                        <div class="md:col-span-2">
+                                            <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1.5">Deskripsi</label>
+                                            <textarea name="description" rows="3" required class="w-full px-3 py-2 text-xs rounded-lg border border-slate-200 dark:border-white/10 bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-white focus:outline-none focus:ring-1 focus:ring-slate-900 dark:focus:ring-white">{{ $product->description }}</textarea>
+                                        </div>
+                                        <div class="md:col-span-2">
+                                            <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1.5">Gambar Baru (Opsional)</label>
+                                            <input type="file" name="image" accept="image/*" class="w-full px-3 py-2 text-xs rounded-lg border border-slate-200 dark:border-white/10 bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-white focus:outline-none focus:ring-1 focus:ring-slate-900 dark:focus:ring-white">
+                                            <p class="text-[11px] text-slate-400 mt-1">Biarkan kosong jika tidak ingin mengubah gambar.</p>
+                                        </div>
+                                    </div>
+                                    <div class="flex justify-end gap-2 pt-3 border-t border-slate-100 dark:border-white/10">
+                                        <button type="button" onclick="closeModal('modal-edit-{{ $product->id }}')" class="px-4 py-2 rounded-lg border border-slate-200 dark:border-white/10 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 text-xs font-medium transition-colors">Batal</button>
+                                        <button type="submit" class="px-4 py-2 rounded-lg bg-slate-900 dark:bg-white text-white dark:text-slate-900 hover:bg-slate-800 dark:hover:bg-slate-100 text-xs font-semibold transition-colors">Update Produk</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        @empty
+                        <tr>
+                            <td colspan="6" class="px-6 py-8 text-center text-slate-400">Belum ada produk untuk kategori ini.</td>
+                        </tr>
+                        @endforelse
+                    </tbody>
+                </table>
             </div>
-            <div class="flex justify-end gap-3 pt-4 border-t border-gray-100">
-                <button type="button" onclick="closeModal('modal-add')" class="px-5 py-2.5 rounded-xl border border-gray-200 text-gray-600 hover:bg-gray-50 font-bold transition">Batal</button>
-                <button type="submit" class="px-5 py-2.5 rounded-xl bg-primary hover:bg-primary_hover text-white font-bold transition">Simpan Produk</button>
+        </div>
+    </div>
+    @endforeach
+
+    <!-- Modal Add -->
+    <div id="modal-add" class="fixed inset-0 bg-slate-950/60 backdrop-blur-xs hidden flex items-center justify-center z-50 p-4">
+        <div class="bg-white dark:bg-[#0c1222] border border-slate-200 dark:border-white/10 rounded-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto shadow-xl transform transition-all">
+            <div class="px-6 py-4 border-b border-slate-100 dark:border-white/10 flex justify-between items-center sticky top-0 bg-white dark:bg-[#0c1222] z-10">
+                <h3 class="font-bold text-sm text-slate-900 dark:text-white">Tambah Produk Baru</h3>
+                <button onclick="closeModal('modal-add')" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 p-1">
+                    <i data-lucide="x" class="size-4"></i>
+                </button>
             </div>
-        </form>
+            <form action="{{ route('admin.products.store') }}" method="POST" enctype="multipart/form-data" class="p-6">
+                @csrf
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1.5">Nama Produk</label>
+                        <input type="text" name="name" required class="w-full px-3 py-2 text-xs rounded-lg border border-slate-200 dark:border-white/10 bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-white focus:outline-none focus:ring-1 focus:ring-slate-900 dark:focus:ring-white">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1.5">Kategori</label>
+                        <select name="category_id" required class="w-full px-3 py-2 text-xs rounded-lg border border-slate-200 dark:border-white/10 bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-white focus:outline-none focus:ring-1 focus:ring-slate-900 dark:focus:ring-white">
+                            @foreach($categories as $cat)
+                                <option value="{{ $cat->id }}">{{ $cat->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1.5">Harga (dalam ribuan, misal 360)</label>
+                        <input type="number" name="price" required class="w-full px-3 py-2 text-xs rounded-lg border border-slate-200 dark:border-white/10 bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-white focus:outline-none focus:ring-1 focus:ring-slate-900 dark:focus:ring-white">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1.5">Stok Harian</label>
+                        <input type="number" name="daily_stock" required class="w-full px-3 py-2 text-xs rounded-lg border border-slate-200 dark:border-white/10 bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-white focus:outline-none focus:ring-1 focus:ring-slate-900 dark:focus:ring-white">
+                    </div>
+                    <div class="md:col-span-2">
+                        <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1.5">Deskripsi</label>
+                        <textarea name="description" rows="3" required class="w-full px-3 py-2 text-xs rounded-lg border border-slate-200 dark:border-white/10 bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-white focus:outline-none focus:ring-1 focus:ring-slate-900 dark:focus:ring-white"></textarea>
+                    </div>
+                    <div class="md:col-span-2">
+                        <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1.5">Gambar Produk</label>
+                        <input type="file" name="image" accept="image/*" required class="w-full px-3 py-2 text-xs rounded-lg border border-slate-200 dark:border-white/10 bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-white focus:outline-none focus:ring-1 focus:ring-slate-900 dark:focus:ring-white">
+                    </div>
+                </div>
+                <div class="flex justify-end gap-2 pt-3 border-t border-slate-100 dark:border-white/10">
+                    <button type="button" onclick="closeModal('modal-add')" class="px-4 py-2 rounded-lg border border-slate-200 dark:border-white/10 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 text-xs font-medium transition-colors">Batal</button>
+                    <button type="submit" class="px-4 py-2 rounded-lg bg-slate-900 dark:bg-white text-white dark:text-slate-900 hover:bg-slate-800 dark:hover:bg-slate-100 text-xs font-semibold transition-colors">Simpan Produk</button>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
 @endsection
