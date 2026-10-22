@@ -7,7 +7,7 @@
 ![Vite](https://img.shields.io/badge/Vite-8.0-646CFF?style=for-the-badge&logo=vite&logoColor=white)
 ![Midtrans](https://img.shields.io/badge/Midtrans_Payment-00A9E0?style=for-the-badge)
 
-**CakeLuv Patisserie** adalah aplikasi E-Commerce toko kue premium modern yang dibangun menggunakan framework **Laravel 13** dan **Tailwind CSS v4**. Dilengkapi katalog produk interaktif, sistem keranjang dinamis, checkout otomatis dengan payment gateway **Midtrans Snap**, login Google OAuth, serta **Dashboard Admin Modern berbasis Shadcn-UI** lengkap dengan analitik omset 12 bulan dan manajemen pesanan.
+**CakeLuv Patisserie** adalah aplikasi E-Commerce toko kue premium modern yang dibangun menggunakan framework **Laravel 13** dan **Tailwind CSS v4**. Dilengkapi katalog produk interaktif, sistem keranjang dinamis, checkout otomatis dengan payment gateway **Midtrans Snap**, login Google OAuth, serta **Dashboard Admin Modern berbasis Shadcn-UI** dengan analitik omset 12 bulan dan manajemen pesanan.
 
 ---
 
@@ -35,7 +35,7 @@
 - **Autentikasi Multi-Metode:** Sistem Login, Register, dan Profil aman berbasis Laravel Auth serta dukungan **Google OAuth (SSO)** via Laravel Socialite.
 - **UI/UX Mewah & Modern:** Tampilan elegan dibangun dengan **Tailwind CSS v4** dan Vite 8, responsif mobile/desktop, animasi halus, dan navigasi yang intuitif.
 
-### 📊 Admin (Dashboard & Manajemen)
+### 📊 Sisi Admin (Dashboard & Manajemen)
 
 - **Dashboard Visualisasi Data (Shadcn-Admin Style):** Metrik KPI omset, total order, grafik analitik batang penjualan 12 bulan, dan diagram doughnut kategori produk terlaris via **Chart.js**.
 - **Manajemen Produk (CRUD):** Tambah, edit, update stok/status, serta sistem upload gambar produk secara terstruktur.
