@@ -1,58 +1,79 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# 🍰 CakeLuv Patisserie - E-Commerce Platform
+
+![PHP](https://img.shields.io/badge/PHP-8.0+-777BB4?style=for-the-badge&logo=php&logoColor=white)
+![Laravel](https://img.shields.io/badge/Laravel-13.x-FF2D20?style=for-the-badge&logo=laravel&logoColor=white)
+![MySQL](https://img.shields.io/badge/MySQL-005C84?style=for-the-badge&logo=mysql&logoColor=white)
+![TailwindCSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)
+![Midtrans](https://img.shields.io/badge/Midtrans_Payment-00A9E0?style=for-the-badge)
+
+**CakeLuv Patisserie** adalah aplikasi E-Commerce toko kue premium modern yang dilengkapi katalog produk interaktif, sistem checkout otomatis dengan payment gateway Midtrans, serta **Dashboard Admin Modern berbasis Shadcn-UI** lengkap dengan analitik omset 12 bulan dan manajemen pesanan.
+
+---
+
+## 📸 Preview Tampilan Aplikasi (HD)
 
 <p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
+  <b>Etalase Beranda (Storefront Landing Page)</b><br>
+  <img src="screenshots/landing-preview.png" alt="CakeLuv Landing Page" width="920">
 </p>
 
-## About Laravel
+<p align="center">
+  <b>Dashboard Admin Modern (Shadcn-Admin Style)</b><br>
+  <img src="screenshots/dashboard-preview.png" alt="CakeLuv Admin Dashboard" width="920">
+</p>
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+---
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## ✨ Fitur Utama (Key Features)
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+### 🛍️ Sisi Pelanggan (Customer-Facing)
+* **Katalog Produk Dinamis:** Menampilkan kue premium dan aksesoris dengan filter kategori.
+* **Keranjang Belanja (Cart):** Pengelolaan keranjang yang responsif dengan fitur catatan (*custom request*) pada setiap produk.
+* **Integrasi Payment Gateway:** Checkout mulus menggunakan **Midtrans Snap API** (Mendukung VA, GoPay, QRIS, dll). Termasuk simulasi pembaruan status Lunas (*Paid*) secara *real-time*.
+* **Autentikasi Aman:** Sistem Login, Register, dan Lupa Sandi berbasis token (OTP) dengan *password hashing* (`bcrypt`) dan proteksi *Session Hijacking*.
+* **UI/UX Mewah:** Dibangun dengan **Tailwind CSS**, mendukung desain responsif, *Toast Notifications* kustom, animasi AOS, dan *slider* produk dengan fitur *drag-to-scroll*.
 
-## Learning Laravel
+### 📊 Sisi Admin (Dashboard & Manajemen)
+* **Visualisasi Data:** Dashboard admin yang dilengkapi grafik analitik (Penjualan 7 Hari Terakhir & Produk Teratas) menggunakan **Chart.js**.
+* **Manajemen Produk (CRUD):** Tambah, edit, hapus produk, serta sistem *upload* dan manajemen *file* gambar ke *local storage*.
+* **Manajemen Pesanan:** Memantau pesanan masuk dan mengubah status pesanan (Pending -> Paid -> Processed -> Shipped).
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+---
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## 🛠️ Tech Stack & Arsitektur
 
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
+* **Backend:** Native PHP (Berorientasi Objek / OOP)
+* **Arsitektur:** Custom MVC (Model - View - Controller) dengan Router dinamis.
+* **Database:** MySQL dengan ekstensi **PDO** (*Prepared Statements* untuk mencegah *SQL Injection*).
+* **Frontend:** HTML5, Tailwind CSS, JavaScript murni (*Vanilla JS*), Chart.js, AOS Animation.
+* **API Integration:** Midtrans Payment Gateway API.
 
-## Agentic Development
+---
 
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+## 💡 Mengapa Proyek Ini Ada di Portfolio Saya?
+Proyek ini membuktikan kemampuan saya dalam membangun sistem yang kompleks tanpa bergantung pada *framework* besar seperti Laravel atau CodeIgniter. Dengan membangun sistem routing, base controller, dan model secara manual, saya mengasah fundamental PHP, manajemen *session*, keamanan database, serta cara kerja *RESTful API* dan Webhook.
 
-```bash
-composer require laravel/boost --dev
+---
 
-php artisan boost:install
-```
+## 🚀 Panduan Instalasi (Local Development)
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+1. **Clone Repositori:**
+   ```bash
+   git clone https://github.com/UsernameAnda/nama-repo-anda.git
+   cd nama-repo-anda
+   ```
+2. **Database Setup:**
+   * Buat database MySQL baru (contoh: `bakery_db`).
+   * Import skema database dari file `database.sql`.
+3. **Konfigurasi Environment:**
+   * Ubah nama file `app/Config/config.example.php` menjadi `config.php`.
+   * Sesuaikan kredensial koneksi database dan masukkan **Client/Server Key Midtrans Sandbox** Anda.
+4. **Jalankan Aplikasi:**
+   * Gunakan XAMPP/Laragon, atau jalankan via *built-in server* PHP:
+     ```bash
+     php -S localhost:8000 -t public
+     ```
 
-## Contributing
-
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+**Akun Demo Admin:**
+* **Email:** `admin@cakeluv.com`
+* **Password:** `password`

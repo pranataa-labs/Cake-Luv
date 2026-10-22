@@ -1,11 +1,26 @@
 # 🍰 CakeLuv Patisserie - E-Commerce Platform
 
 ![PHP](https://img.shields.io/badge/PHP-8.0+-777BB4?style=for-the-badge&logo=php&logoColor=white)
+![Laravel](https://img.shields.io/badge/Laravel-13.x-FF2D20?style=for-the-badge&logo=laravel&logoColor=white)
 ![MySQL](https://img.shields.io/badge/MySQL-005C84?style=for-the-badge&logo=mysql&logoColor=white)
 ![TailwindCSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)
 ![Midtrans](https://img.shields.io/badge/Midtrans_Payment-00A9E0?style=for-the-badge)
 
-**CakeLuv Patisserie** adalah aplikasi E-Commerce toko kue premium yang dibangun dari nol (*from scratch*) menggunakan arsitektur **Native PHP MVC** (Tanpa Framework). Proyek ini saya kembangkan untuk mendemonstrasikan pemahaman mendalam tentang pola desain MVC, keamanan web, dan integrasi API pihak ketiga (*Payment Gateway*).
+**CakeLuv Patisserie** adalah aplikasi E-Commerce toko kue premium modern yang dilengkapi katalog produk interaktif, sistem checkout otomatis dengan payment gateway Midtrans, serta **Dashboard Admin Modern berbasis Shadcn-UI** lengkap dengan analitik omset 12 bulan dan manajemen pesanan.
+
+---
+
+## 📸 Preview Tampilan Aplikasi (HD)
+
+<p align="center">
+  <b>Etalase Beranda (Storefront Landing Page)</b><br>
+  <img src="screenshots/landing-preview.png" alt="CakeLuv Landing Page" width="920">
+</p>
+
+<p align="center">
+  <b>Dashboard Admin Modern (Shadcn-Admin Style)</b><br>
+  <img src="screenshots/dashboard-preview.png" alt="CakeLuv Admin Dashboard" width="920">
+</p>
 
 ---
 
