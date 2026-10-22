@@ -65,7 +65,7 @@ Proyek ini mendemonstrasikan keahlian dalam merancang sistem *e-commerce* full-s
 
 1. **Clone Repositori:**
    ```bash
-   git clone https://github.com/PranataGM/CakeLuv.git
+   git clone https://github.com/pranataa-labs/CakeLuv.git
    cd CakeLuv/CakeLuv
    ```
 
