@@ -1,12 +1,13 @@
 # 🍰 CakeLuv Patisserie - E-Commerce Platform
 
-![PHP](https://img.shields.io/badge/PHP-8.0+-777BB4?style=for-the-badge&logo=php&logoColor=white)
+![PHP](https://img.shields.io/badge/PHP-8.3+-777BB4?style=for-the-badge&logo=php&logoColor=white)
 ![Laravel](https://img.shields.io/badge/Laravel-13.x-FF2D20?style=for-the-badge&logo=laravel&logoColor=white)
 ![MySQL](https://img.shields.io/badge/MySQL-005C84?style=for-the-badge&logo=mysql&logoColor=white)
-![TailwindCSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)
+![TailwindCSS](https://img.shields.io/badge/Tailwind_CSS-v4-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)
+![Vite](https://img.shields.io/badge/Vite-8.0-646CFF?style=for-the-badge&logo=vite&logoColor=white)
 ![Midtrans](https://img.shields.io/badge/Midtrans_Payment-00A9E0?style=for-the-badge)
 
-**CakeLuv Patisserie** adalah aplikasi E-Commerce toko kue premium modern yang dilengkapi katalog produk interaktif, sistem checkout otomatis dengan payment gateway Midtrans, serta **Dashboard Admin Modern berbasis Shadcn-UI** lengkap dengan analitik omset 12 bulan dan manajemen pesanan.
+**CakeLuv Patisserie** adalah aplikasi E-Commerce toko kue premium modern yang dibangun menggunakan framework **Laravel 13** dan **Tailwind CSS v4**. Dilengkapi katalog produk interaktif, sistem keranjang dinamis, checkout otomatis dengan payment gateway **Midtrans Snap**, login Google OAuth, serta **Dashboard Admin Modern berbasis Shadcn-UI** lengkap dengan analitik omset 12 bulan dan manajemen pesanan.
 
 ---
 
@@ -27,31 +28,36 @@
 ## ✨ Fitur Utama (Key Features)
 
 ### 🛍️ Sisi Pelanggan (Customer-Facing)
-* **Katalog Produk Dinamis:** Menampilkan kue premium dan aksesoris dengan filter kategori.
-* **Keranjang Belanja (Cart):** Pengelolaan keranjang yang responsif dengan fitur catatan (*custom request*) pada setiap produk.
-* **Integrasi Payment Gateway:** Checkout mulus menggunakan **Midtrans Snap API** (Mendukung VA, GoPay, QRIS, dll). Termasuk simulasi pembaruan status Lunas (*Paid*) secara *real-time*.
-* **Autentikasi Aman:** Sistem Login, Register, dan Lupa Sandi berbasis token (OTP) dengan *password hashing* (`bcrypt`) dan proteksi *Session Hijacking*.
-* **UI/UX Mewah:** Dibangun dengan **Tailwind CSS**, mendukung desain responsif, *Toast Notifications* kustom, animasi AOS, dan *slider* produk dengan fitur *drag-to-scroll*.
+* **Katalog Produk Dinamis:** Menampilkan katalog kue artisan dan aksesoris pesta dengan filter kategori responsif.
+* **Keranjang Belanja Interaktif:** Pengelolaan item keranjang fleksibel dengan fitur catatan khusus (*custom cake request*) pada setiap item.
+* **Integrasi Payment Gateway:** Checkout instan menggunakan **Midtrans Snap API** (Mendukung Virtual Account bank, GoPay, QRIS, dll) dengan status transaksi otomatis.
+* **Autentikasi Multi-Metode:** Sistem Login, Register, dan Profil aman berbasis Laravel Auth serta dukungan **Google OAuth (SSO)** via Laravel Socialite.
+* **UI/UX Mewah & Modern:** Tampilan elegan dibangun dengan **Tailwind CSS v4** dan Vite 8, responsif mobile/desktop, animasi halus, dan navigasi yang intuitif.
 
 ### 📊 Sisi Admin (Dashboard & Manajemen)
-* **Visualisasi Data:** Dashboard admin yang dilengkapi grafik analitik (Penjualan 7 Hari Terakhir & Produk Teratas) menggunakan **Chart.js**.
-* **Manajemen Produk (CRUD):** Tambah, edit, hapus produk, serta sistem *upload* dan manajemen *file* gambar ke *local storage*.
-* **Manajemen Pesanan:** Memantau pesanan masuk dan mengubah status pesanan (Pending -> Paid -> Processed -> Shipped).
+* **Dashboard Visualisasi Data (Shadcn-Admin Style):** Metrik KPI omset, total order, grafik analitik batang penjualan 12 bulan, dan diagram doughnut kategori produk terlaris via **Chart.js**.
+* **Manajemen Produk (CRUD):** Tambah, edit, update stok/status, serta sistem upload gambar produk secara terstruktur.
+* **Manajemen Pesanan Real-Time:** Monitoring pesanan masuk dengan kemampuan pembaruan status transaksi (*Pending -> Paid -> Processed -> Shipped*).
+* **Pengaturan Toko Dinamis:** Konfigurasi informasi kontak, banner, chef patissier, dan jam operasional langsung dari panel admin.
 
 ---
 
 ## 🛠️ Tech Stack & Arsitektur
 
-* **Backend:** Native PHP (Berorientasi Objek / OOP)
-* **Arsitektur:** Custom MVC (Model - View - Controller) dengan Router dinamis.
-* **Database:** MySQL dengan ekstensi **PDO** (*Prepared Statements* untuk mencegah *SQL Injection*).
-* **Frontend:** HTML5, Tailwind CSS, JavaScript murni (*Vanilla JS*), Chart.js, AOS Animation.
-* **API Integration:** Midtrans Payment Gateway API.
+* **Framework Backend:** Laravel 13.x (PHP 8.3+)
+* **Arsitektur:** Modern MVC (Model-View-Controller) dengan Eloquent ORM, Service / Controller pattern, dan Middleware Route Protection.
+* **Database:** MySQL dengan sistem Laravel Migrations, Factories, dan Database Seeders.
+* **Frontend:** Laravel Blade Templating, Tailwind CSS v4, dikompilasi cepat menggunakan Vite 8.
+* **Third-Party & Integrasi:**
+  * **Midtrans Snap API:** Payment Gateway terintegrasi untuk checkout instan.
+  * **Laravel Socialite:** Autentikasi Google OAuth single sign-on (SSO).
+  * **Chart.js:** Visualisasi grafik omset 12 bulan dan kategori produk terlaris di Admin Panel.
+  * **Shadcn-Admin UI Style:** Desain dashboard profesional berbasis palet Slate OKLCH dan komponen modern.
 
 ---
 
 ## 💡 Mengapa Proyek Ini Ada di Portfolio Saya?
-Proyek ini membuktikan kemampuan saya dalam membangun sistem yang kompleks tanpa bergantung pada *framework* besar seperti Laravel atau CodeIgniter. Dengan membangun sistem routing, base controller, dan model secara manual, saya mengasah fundamental PHP, manajemen *session*, keamanan database, serta cara kerja *RESTful API* dan Webhook.
+Proyek ini mendemonstrasikan keahlian dalam merancang sistem *e-commerce* full-stack berskala produksi menggunakan ekosistem modern **Laravel 13** dan **Tailwind CSS v4**. Menggabungkan arsitektur *clean code* berbasis MVC, integritas data transaksional dengan Eloquent ORM, integrasi pembayaran pihak ketiga (Midtrans Snap), sistem autentikasi aman multi-metode (termasuk Google SSO), serta antarmuka admin bergaya **Shadcn-UI** yang intuitif dan kaya analitik data.
 
 ---
 
@@ -59,20 +65,37 @@ Proyek ini membuktikan kemampuan saya dalam membangun sistem yang kompleks tanpa
 
 1. **Clone Repositori:**
    ```bash
-   git clone https://github.com/UsernameAnda/nama-repo-anda.git
-   cd nama-repo-anda
+   git clone https://github.com/PranataGM/CakeLuv.git
+   cd CakeLuv/CakeLuv
    ```
-2. **Database Setup:**
-   * Buat database MySQL baru (contoh: `bakery_db`).
-   * Import skema database dari file `database.sql`.
+
+2. **Install Dependensi:**
+   ```bash
+   composer install
+   npm install
+   ```
+
 3. **Konfigurasi Environment:**
-   * Ubah nama file `app/Config/config.example.php` menjadi `config.php`.
-   * Sesuaikan kredensial koneksi database dan masukkan **Client/Server Key Midtrans Sandbox** Anda.
-4. **Jalankan Aplikasi:**
-   * Gunakan XAMPP/Laragon, atau jalankan via *built-in server* PHP:
+   * Salin file `.env.example` menjadi `.env`:
      ```bash
-     php -S localhost:8000 -t public
+     cp .env.example .env
+     php artisan key:generate
      ```
+   * Sesuaikan konfigurasi database (`DB_DATABASE`, `DB_USERNAME`, `DB_PASSWORD`) dan kunci API Midtrans (`MIDTRANS_SERVER_KEY`, `MIDTRANS_CLIENT_KEY`) di file `.env`.
+
+4. **Migrasi & Seeding Database:**
+   ```bash
+   php artisan migrate --seed
+   ```
+
+5. **Jalankan Aplikasi:**
+   ```bash
+   npm run build
+   php artisan serve
+   ```
+   Aplikasi dapat diakses melalui `http://localhost:8000`.
+
+---
 
 **Akun Demo Admin:**
 * **Email:** `admin@cakeluv.com`
