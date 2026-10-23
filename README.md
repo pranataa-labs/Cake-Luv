@@ -42,6 +42,13 @@
 - **Manajemen Pesanan Real-Time:** Monitoring pesanan masuk dengan kemampuan pembaruan status transaksi (_Pending -> Paid -> Processed -> Shipped_).
 - **Pengaturan Toko Dinamis:** Konfigurasi informasi kontak, banner, chef patissier, dan jam operasional langsung dari panel admin.
 
+### 🛡️ Keamanan & Route Obfuscation (Admin Hardening)
+
+- **Route Obfuscation Dinamis:** URL panel admin tidak menggunakan path statis yang mudah ditebak (`/admin`). Prefix dikonfigurasi melalui environment variable `ADMIN_PREFIX` di `.env` (default: `cakeluv-portal-mgmt`).
+- **Pencegahan Automated Scanning (Anti-Brute Force):** Mengakses path lama/umum (`/admin` atau `/admin/dashboard`) otomatis mengembalikan status **HTTP 404 Not Found**, menyamarkan keberadaan panel administrasi dari pemindai bot.
+- **Strict Role-Based Access Control (RBAC):** Middleware `AdminMiddleware` memvalidasi role akun secara ketat di layer server; pengguna biasa (customer) yang mencoba mengakses panel langsung ditolak dan dialihkan dengan peringatan keamanan.
+- **Named Route Architecture:** Semua tautan internal dan redirect menggunakan `route('admin.*')`, menjamin keandalan navigasi saat prefix diubah.
+
 ---
 
 ## 🛠️ Tech Stack & Arsitektur
