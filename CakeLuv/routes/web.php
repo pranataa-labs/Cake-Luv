@@ -39,8 +39,13 @@ Route::middleware('auth')->group(function () {
 Route::get('/auth/google', [AuthController::class, 'redirectToGoogle'])->name('auth.google');
 Route::get('/auth/google/callback', [AuthController::class, 'handleGoogleCallback']);
 
-// Admin Routes
-Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
+// Obfuscated Admin Routes (Prefix tidak bisa ditebak, dikonfigurasi via ADMIN_PREFIX di .env)
+$adminPrefix = config('app.admin_prefix', env('ADMIN_PREFIX', 'cakeluv-portal-mgmt'));
+
+Route::middleware(['auth', 'admin'])->prefix($adminPrefix)->name('admin.')->group(function () {
+    Route::get('/', function () {
+        return redirect()->route('admin.dashboard');
+    });
     Route::get('/dashboard', [\App\Http\Controllers\Admin\DashboardController::class, 'index'])->name('dashboard');
     
     // Products

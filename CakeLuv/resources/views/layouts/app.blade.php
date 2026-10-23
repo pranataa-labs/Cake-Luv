@@ -97,7 +97,7 @@
                     
                     @auth
                         @if(auth()->user()->role === 'admin')
-                            <a href="{{ url('/admin') }}" class="hidden md:block text-xs uppercase font-bold tracking-wider text-gold hover:text-yellow-600 transition">Admin</a>
+                            <a href="{{ route('admin.dashboard') }}" class="hidden md:block text-xs uppercase font-bold tracking-wider text-gold hover:text-yellow-600 transition">Admin</a>
                         @endif
                         <a href="{{ url('/profile') }}" class="text-xs uppercase font-bold tracking-wider text-gray-600 hover:text-primary transition flex items-center gap-2">
                             @if(auth()->user()->avatar)

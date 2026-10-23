@@ -55,34 +55,41 @@ class BackendLogicAndSecurityTest extends TestCase
     /* 1. Security & RBAC Middleware Tests                                        */
     /* -------------------------------------------------------------------------- */
 
+    public function test_legacy_predictable_admin_path_returns_404_not_found(): void
+    {
+        // Memastikan route umum '/admin' atau '/admin/dashboard' tidak bisa ditebak bot/attacker
+        $this->get('/admin')->assertStatus(404);
+        $this->get('/admin/dashboard')->assertStatus(404);
+    }
+
     public function test_unauthenticated_user_cannot_access_admin_dashboard(): void
     {
-        $response = $this->get('/admin/dashboard');
+        $response = $this->get(route('admin.dashboard'));
         $response->assertRedirect('/login');
     }
 
     public function test_customer_cannot_access_admin_routes(): void
     {
-        $response = $this->actingAs($this->customer)->get('/admin/dashboard');
+        $response = $this->actingAs($this->customer)->get(route('admin.dashboard'));
         $response->assertRedirect('/');
         $response->assertSessionHas('error', 'Akses ditolak. Anda bukan admin.');
 
-        $productResponse = $this->actingAs($this->customer)->get('/admin/products');
+        $productResponse = $this->actingAs($this->customer)->get(route('admin.products.index'));
         $productResponse->assertRedirect('/');
 
-        $ordersResponse = $this->actingAs($this->customer)->get('/admin/orders');
+        $ordersResponse = $this->actingAs($this->customer)->get(route('admin.orders.index'));
         $ordersResponse->assertRedirect('/');
     }
 
     public function test_admin_can_access_admin_routes(): void
     {
-        $response = $this->actingAs($this->admin)->get('/admin/dashboard');
+        $response = $this->actingAs($this->admin)->get(route('admin.dashboard'));
         $response->assertStatus(200);
 
-        $productResponse = $this->actingAs($this->admin)->get('/admin/products');
+        $productResponse = $this->actingAs($this->admin)->get(route('admin.products.index'));
         $productResponse->assertStatus(200);
 
-        $ordersResponse = $this->actingAs($this->admin)->get('/admin/orders');
+        $ordersResponse = $this->actingAs($this->admin)->get(route('admin.orders.index'));
         $ordersResponse->assertStatus(200);
     }
 
@@ -313,7 +320,7 @@ class BackendLogicAndSecurityTest extends TestCase
             'production_status' => 'waiting',
         ]);
 
-        $response = $this->actingAs($this->admin)->post("/admin/orders/{$order->id}/status", [
+        $response = $this->actingAs($this->admin)->post(route('admin.orders.updateStatus', $order->id), [
             'payment_status' => 'paid',
             'production_status' => 'ready',
         ]);
@@ -325,7 +332,7 @@ class BackendLogicAndSecurityTest extends TestCase
 
     public function test_admin_can_delete_product(): void
     {
-        $response = $this->actingAs($this->admin)->post("/admin/products/{$this->product->id}/delete");
+        $response = $this->actingAs($this->admin)->post(route('admin.products.destroy', $this->product->id));
         $response->assertRedirect();
         $this->assertDatabaseMissing('products', ['id' => $this->product->id]);
     }
