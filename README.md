@@ -1,5 +1,7 @@
 # 🍰 CakeLuv Patisserie - Premium E-Commerce Platform
 
+[`laravel`](https://github.com/topics/laravel) • [`tailwind`](https://github.com/topics/tailwind) • [`midtrans`](https://github.com/topics/midtrans) • [`ecommerce`](https://github.com/topics/ecommerce) • [`bakery`](https://github.com/topics/bakery) • [`google-oauth`](https://github.com/topics/google-oauth) • [`shadcn-admin`](https://github.com/topics/shadcn-admin) • [`vite`](https://github.com/topics/vite) • [`mysql`](https://github.com/topics/mysql)
+
 ![PHP](https://img.shields.io/badge/PHP-8.3+-777BB4?style=for-the-badge&logo=php&logoColor=white)
 ![Laravel](https://img.shields.io/badge/Laravel-13.x-FF2D20?style=for-the-badge&logo=laravel&logoColor=white)
 ![MySQL](https://img.shields.io/badge/MySQL-005C84?style=for-the-badge&logo=mysql&logoColor=white)
